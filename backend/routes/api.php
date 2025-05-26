@@ -42,11 +42,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Ruta protegida de prueba
-Route::middleware('auth:sanctum')->get('/dashboard', function () {
-    return response()->json(['mensaje' => 'Accediste como usuario autenticado']);
-});
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('productos', ProductoController::class);
 });
@@ -60,3 +55,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/semanas', [SemanaController::class, 'store']);
     Route::get('/semanas', [SemanaController::class, 'index']);
 });
+
+// Ruta pública
+Route::get('/semanas', [SemanaController::class, 'index']);
+
+// routes/api.php
+Route::get('/reservas/semana/{id}', [ReservaController::class, 'porSemana']);
