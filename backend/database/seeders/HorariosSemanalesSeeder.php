@@ -10,8 +10,8 @@ class HorariosSemanalesSeeder extends Seeder
 {
     public function run()
 {
-    $inicio = \Carbon\Carbon::now()->startOfWeek()->toDateString();
-    $fin = \Carbon\Carbon::now()->endOfWeek()->toDateString();
+    $inicio = Carbon::now()->startOfWeek()->toDateString();
+    $fin = Carbon::now()->endOfWeek()->toDateString();
 
     // Verificar si ya existe una semana con esas fechas
     $semana = \DB::table('semanas')

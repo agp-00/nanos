@@ -8,28 +8,34 @@ use App\Models\User;
 use App\Http\Controllers\Api\ProductoController;
 use App\Http\Controllers\Api\SemanaController;
 use App\Http\Controllers\Api\ReservaController;
+use App\Services\ReservaService;
 
 
 // Ruta para login
-Route::post('/login', function (Request $request) {
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+Route::post(
+    '/login',
+    function (Request $request) {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-    $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
 
-    if (! $user || ! Hash::check($request->password, $user->password)) {
-        throw ValidationException::withMessages([
-            'email' => ['Credenciales incorrectas.'],
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['Credenciales incorrectas.'],
+            ]);
+        }
+
+        ReservaService::limpiarTelefonos();
+
+        return response()->json([
+            'token' => $user->createToken('auth_token')->plainTextToken,
+            'user' => $user,
         ]);
     }
-
-    return response()->json([
-        'token' => $user->createToken('auth_token')->plainTextToken,
-        'user' => $user,
-    ]);
-});
+);
 
 // Ruta para logout (requiere autenticación)
 Route::middleware('auth:sanctum')->post('/logout', function (Request $request) {
@@ -49,7 +55,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('reservas', ReservaController::class);
+    Route::put('/reservas/{id}/estado', [ReservaController::class, 'updateEstado']);
 });
+
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/semanas', [SemanaController::class, 'store']);
@@ -61,3 +69,4 @@ Route::get('/semanas', [SemanaController::class, 'index']);
 
 // routes/api.php
 Route::get('/reservas/semana/{id}', [ReservaController::class, 'porSemana']);
+Route::post('/reservas', [ReservaController::class, 'store']);
