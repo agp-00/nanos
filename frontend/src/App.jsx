@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import InventarioAdminPage from "./pages/Admin/InventarioAdminPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import ReservasAdminPage from "./pages/Admin/ReservasAdminPage";
+import SemanasAdminPage from "./pages/Admin/SemanasAdminPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/inventario" element={<InventarioAdminPage />} />
         <Route path="/admin/reservas" element={<ReservasAdminPage />} />
+        <Route path="/admin/semanas" element={<SemanasAdminPage />} />
       </Routes>
     </Router>
   );

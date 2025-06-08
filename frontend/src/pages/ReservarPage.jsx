@@ -106,10 +106,11 @@ function ReservarPage() {
       });
 
       setReservaEnviada(true);
+      alert("✅ ¡Reserva enviada correctamente! Serás redirigido en unos segundos...");
 
       setTimeout(() => {
         navigate("/");
-      }, 3000);
+      }, 1500);
     } catch (error) {
       console.error("Error al enviar la reserva:", error.response.data);
       if (error.response?.data?.error) {
@@ -124,11 +125,8 @@ function ReservarPage() {
     <div className="p-4 max-w-5xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Reservar</h1>
 
-      {reservaEnviada && (
-        <div className="mb-6 p-4 bg-green-100 border border-green-300 text-green-800 rounded">
-          ✅ ¡Reserva enviada correctamente! Serás redirigido en unos segundos...
-        </div>
-      )}
+
+
       {semanas.length > 0 && (
         <>
           <p className="mb-2 font-semibold">Selecciona un día:</p>
@@ -160,7 +158,7 @@ function ReservarPage() {
         <div className="my-8">
           <div className="flex justify-between items-center mb-2">
             <h2 className="text-xl font-semibold">
-              Horario visual — {diaSeleccionado.dia} {form.fecha}
+              Dia seleccionado — {diaSeleccionado.dia} {form.fecha}
             </h2>
             <button
               onClick={() => setMostrarHorario(prev => !prev)}

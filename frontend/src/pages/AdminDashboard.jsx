@@ -17,9 +17,16 @@ function AdminDashboard() {
 
         <button
           onClick={() => navigate('/admin/reservas')}
-          className="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700"
+          className="bg-yellow-400 text-white px-6 py-3 rounded hover:bg-yellow-700"
         >
           Gestionar Reservas
+        </button>
+
+                <button
+          onClick={() => navigate('/admin/semanas')}
+          className="bg-red-600 text-white px-6 py-3 rounded hover:bg-red-700"
+        >
+          Gestionar Semanas
         </button>
       </div>
     </div>
