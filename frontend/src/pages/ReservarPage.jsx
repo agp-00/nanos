@@ -57,56 +57,68 @@ function ReservarPage() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  // Asegurar formato HH:mm:ss
-  const pad = (hora) => (hora.length === 5 ? `${hora}:00` : hora);
+    // Asegurar formato HH:mm:ss
+    const pad = (hora) => (hora.length === 5 ? `${hora}:00` : hora);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const telefonoRegex = /^[0-9+\s()-]{7,20}$/;
 
-  const hora_inicio = pad(form.hora_inicio);
-  const hora_fin = pad(form.hora_fin);
-
-  if (!form.nombre_cliente || !form.telefono || !form.fecha || !hora_inicio || !hora_fin) {
-    alert("Por favor, completa todos los campos requeridos.");
-    return;
-  }
-
-  if (hora_inicio >= hora_fin) {
-    alert("La hora de inicio debe ser anterior a la de fin.");
-    return;
-  }
-
-  if (hora_inicio < horarioDia.hora_inicio || hora_fin > horarioDia.hora_fin) {
-    alert(
-      `Las horas deben estar dentro del horario disponible: ${horarioDia.hora_inicio} - ${horarioDia.hora_fin}`
-    );
-    return;
-  }
-
-  try {
-    await axios.post("/reservas", {
-      nombre_cliente: form.nombre_cliente,
-      email_cliente: form.email_cliente || null,
-      telefono: form.telefono,
-      fecha: form.fecha,
-      hora_inicio,
-      hora_fin,
-      observaciones: form.observaciones || null,
-    });
-
-    setReservaEnviada(true);
-
-    setTimeout(() => {
-      navigate("/");
-    }, 3000);
-  } catch (error) {
-    console.error("Error al enviar la reserva:", error.response.data);
-    if (error.response?.data?.error) {
-      alert(error.response.data.error);
-    } else {
-      alert("Ocurrió un error al enviar la reserva.");
+    if (form.email_cliente && !emailRegex.test(form.email_cliente)) {
+      alert('Introduce un correo electrónico válido.');
+      return;
     }
-  }
-};
+
+    if (!telefonoRegex.test(form.telefono)) {
+      alert('Introduce un número de teléfono válido.');
+      return;
+    }
+
+    const hora_inicio = pad(form.hora_inicio);
+    const hora_fin = pad(form.hora_fin);
+
+    if (!form.nombre_cliente || !form.telefono || !form.fecha || !hora_inicio || !hora_fin) {
+      alert("Por favor, completa todos los campos requeridos.");
+      return;
+    }
+
+    if (hora_inicio >= hora_fin) {
+      alert("La hora de inicio debe ser anterior a la de fin.");
+      return;
+    }
+
+    if (hora_inicio < horarioDia.hora_inicio || hora_fin > horarioDia.hora_fin) {
+      alert(
+        `Las horas deben estar dentro del horario disponible: ${horarioDia.hora_inicio} - ${horarioDia.hora_fin}`
+      );
+      return;
+    }
+
+    try {
+      await axios.post("/reservas", {
+        nombre_cliente: form.nombre_cliente,
+        email_cliente: form.email_cliente || null,
+        telefono: form.telefono,
+        fecha: form.fecha,
+        hora_inicio,
+        hora_fin,
+        observaciones: form.observaciones || null,
+      });
+
+      setReservaEnviada(true);
+
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    } catch (error) {
+      console.error("Error al enviar la reserva:", error.response.data);
+      if (error.response?.data?.error) {
+        alert(error.response.data.error);
+      } else {
+        alert("Ocurrió un error al enviar la reserva.");
+      }
+    }
+  };
 
   return (
     <div className="p-4 max-w-5xl mx-auto">

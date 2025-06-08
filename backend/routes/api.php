@@ -68,5 +68,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/semanas', [SemanaController::class, 'index']);
 
 // routes/api.php
+Route::get('reservas', [ReservaController::class,'index']);
 Route::get('/reservas/semana/{id}', [ReservaController::class, 'porSemana']);
 Route::post('/reservas', [ReservaController::class, 'store']);
+Route::patch('/reservas/{id}/estado', [ReservaController::class, 'updateEstado']);

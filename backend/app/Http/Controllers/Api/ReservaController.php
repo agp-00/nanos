@@ -17,15 +17,15 @@ class ReservaController extends Controller
      */
     public function index()
     {
-        //
+        return Reserva::all();
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'nombre_cliente' => 'required|string|max:255',
-            'email_cliente' => 'nullable|email|max:255',
-            'telefono' => 'required|string|max:20',
+            'email_cliente' => 'nullable|email:rfc,dns|max:255',
+            'telefono' => ['required', 'string', 'max:20', 'regex:/^[0-9+\s()-]{7,20}$/'],
             'fecha' => 'required|date',
             'hora_inicio' => 'required|date_format:H:i:s',
             'hora_fin' => 'required|date_format:H:i:s|after:hora_inicio',
@@ -103,7 +103,6 @@ class ReservaController extends Controller
     }
 
 
-
     public function porSemana($id)
     {
         $semana = Semana::findOrFail($id);
@@ -122,6 +121,7 @@ class ReservaController extends Controller
 
         return response()->json(['message' => 'Estado actualizado correctamente']);
     }
+
 
 
 }
