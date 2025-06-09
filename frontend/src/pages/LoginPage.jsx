@@ -15,7 +15,7 @@ function LoginPage() {
     setError(null);
     try {
       const res = await axios.post("/login", form);
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("auth_token", res.data.token);
       navigate("/admin");
     } catch (err) {
       setError("Credenciales incorrectas o error en el servidor.");

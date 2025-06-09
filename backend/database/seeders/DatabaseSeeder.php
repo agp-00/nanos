@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(HorariosSemanalesSeeder::class);
         $this->call(UserSeeder::class);
-        $this->call(ProductSeeder::class);
     }
 
 }

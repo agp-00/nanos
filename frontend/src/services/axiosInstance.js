@@ -8,7 +8,7 @@ const instance = axios.create({
 });
 
 // Cargar token si existe
-const token = localStorage.getItem('token');
+const token = localStorage.getItem('auth_token');
 if (token) {
   instance.defaults.headers.Authorization = `Bearer ${token}`;
 }
