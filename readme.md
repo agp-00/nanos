@@ -9,10 +9,11 @@ Este proyecto es una solución de software para la gestión de reservas, inventa
 ### 🖥 Backend (Laravel)
 - Laravel: **v12.x**
 - PHP: **v8.2.12**
+https://windows.php.net/download/
 - MySQL: **v8.0.40**
+
 - Composer: **v2.7+**
 - Laravel Sanctum: Autenticación de API
-- Correo no implementado, confirmación vía WhatsApp (campo teléfono)
 - Entorno local: **Laragon 6.0**
 
 ### 🌐 Frontend (React)
