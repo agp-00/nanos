@@ -27,7 +27,7 @@ function HorarioVisual({ semana, reservas, horarios }) {
     const inicio = horaAminutos(horario.hora_inicio);
     const fin = horaAminutos(horario.hora_fin);
 
-    if (minutos < inicio || minutos >= fin) return "bg-gray-100";
+    if (minutos < inicio || minutos >= fin) return "bg-gray-200";
 
     // Calcular fecha real del día
     const fechaBase = new Date(semana.fecha_inicio);
@@ -43,7 +43,8 @@ function HorarioVisual({ semana, reservas, horarios }) {
       return minutos >= inicioR && minutos < finR;
     });
 
-    if (reserva?.estado === "aceptada") return "bg-red-400";
+    if (reserva?.estado === "aceptada") return "bg-green-400";
+    if (reserva?.estado ==="rechazada") return "bg-red-400"
     if (reserva?.estado === "pendiente") return "bg-yellow-300";
 
     return "bg-white";

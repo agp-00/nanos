@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../services/axiosInstance';
+import { AxiosError } from 'axios';
 
 function InventarioAdminPage() {
   const [productos, setProductos] = useState([]);
@@ -52,29 +53,31 @@ function InventarioAdminPage() {
   };
 
   const handleNuevoProducto = () => {
-  // Verificar si la categoría es válida
-  if (!categorias.includes(nuevoProducto.categoria)) {
-    alert('La categoría introducida no es válida. Elige una categoría existente o asegúrate de escribirla correctamente.');
-    return;
-  }
+    const formData = new FormData();
+    formData.append('nombre', nuevoProducto.nombre);
+    formData.append('cantidad', nuevoProducto.cantidad);
+    formData.append('categoria', nuevoProducto.categoria);
+    formData.append('descripcion', nuevoProducto.descripcion);
+    if (nuevoProducto.imagen) {
+      formData.append('imagen', nuevoProducto.imagen);
+    }
 
-  const formData = new FormData();
-  formData.append('nombre', nuevoProducto.nombre);
-  formData.append('cantidad', nuevoProducto.cantidad);
-  formData.append('categoria', nuevoProducto.categoria);
-  formData.append('descripcion', nuevoProducto.descripcion);
-  if (nuevoProducto.imagen) {
-    formData.append('imagen', nuevoProducto.imagen);
-  }
+    axios.post('/productos', formData)
+      .then(() => {
+        fetchProductos();
+        setNuevoProducto({ nombre: '', cantidad: '', categoria: '', descripcion: '', imagen: null });
+        setMostrarFormulario(false);
+      })
+      .catch(err => {
+        if (err.response && err.response.status === 422) {
+          alert('Categoría no válida');
+        } else {
+          alert('Ocurrió un error al crear el producto');
+        }
+        console.error(err);
+      });
+  };
 
-  axios.post('/productos', formData)
-    .then(() => {
-      fetchProductos();
-      setNuevoProducto({ nombre: '', cantidad: '', categoria: '', descripcion: '', imagen: null });
-      setMostrarFormulario(false);
-    })
-    .catch(err => console.error(err));
-};
 
 
   const productosFiltrados = categoriaFiltro
